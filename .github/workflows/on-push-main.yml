@@ -24,6 +24,7 @@ jobs:
       target-ref: ${{ github.sha }}
       solution: ${{ vars.SOLUTION }}
       soln-dir: ${{ vars.SOLN_DIR }}
+      output-dir: ${{ vars.OUTPUT_DIR }}
       site-url: ${{ vars.SITE_URL }}
       deploy-to: ${{ vars.DEPLOY_CI }}
       check-links: ${{ vars.CHECK_LINKS }}
