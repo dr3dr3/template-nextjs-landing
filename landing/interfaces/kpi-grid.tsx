@@ -1,7 +1,13 @@
+import { Endpoints } from "@octokit/types";
 import clsx from 'clsx';
 import { StarIcon, FaceSmileIcon, FaceFrownIcon, HandThumbDownIcon } from '@heroicons/react/24/outline'
 import { parseISO, differenceInBusinessDays } from 'date-fns';
-import { display } from '@/style/fonts';
+import { display, inter } from '@/style/fonts';
+import { env } from "process";
+import { create } from "domain";
+import { type } from "os";
+
+type listDeployments = Endpoints["GET /repos/{owner}/{repo}/deployments"]["response"]["data"];
 
 async function getDeploymentData() {
     const ghRepo = process.env.GITHUB_REPOSITORY || '';
@@ -20,12 +26,14 @@ async function getDeploymentData() {
 
 export default async function KpiGrid() {
 
-    const data = await getDeploymentData();
-    const latest = Math.max( ...data.map( item => parseISO(item.created_at) ) );
-    const earliest = Math.min( ...data.map( item => parseISO(item.created_at) ) );
+    const data:listDeployments = await getDeploymentData();
+
+    const latest = Math.max( ...data.map( i => parseISO(i.created_at).getTime() ) );
+    const earliest = Math.min( ...data.map( i => parseISO(i.created_at).getTime() ) );
     const bizDays = differenceInBusinessDays(latest, earliest);
-    const countDeployments = data.filter( item => item.environment === 'github-pages' ).length;
+    const countDeployments = data.filter( i => i.environment === 'github-pages' ).length;
     const df = countDeployments/bizDays;
+
     let dfObj = { stat: df.toFixed(2), frame: 'per day', performance: 'elite' };
     if (df < 0.14) dfObj = { stat: (df*20).toFixed(2), frame: 'per month' , performance: 'high' };
     if (df < 0.03) dfObj = { stat: (df*20).toFixed(2), frame: 'per year' , performance: 'medium' };

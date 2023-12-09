@@ -1,4 +1,4 @@
-import { getInstance } from '@/lib/utils/featurevisor';
+import { getInstance } from '@/utils/featurevisor';
 
 export async function getStaticProps() {
   const featureKey = "showLatestChange";
