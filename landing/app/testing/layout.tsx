@@ -1,21 +1,20 @@
 import type { Metadata } from 'next';
-import { display } from '@/style/fonts';
+import { inter } from '@/style/fonts';
 import '@/style/globals.css';
-
 
 export const metadata: Metadata = {
   title: 'DevOps Demo',
   description: 'Demonstrating the value of DevOps practices.',
 }
 
-export default function RootLayout({
+export default function TestLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
     <html lang="en">
-      <body className={`${display.className} antialiased bg-neutral-100 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200`}>{children}</body>
+      <body className={`${inter.className} antialiased bg-white dark:bg-black text-slate-900 dark:text-slate-200`}>{children}</body>
     </html>
   )
 }

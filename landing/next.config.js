@@ -27,6 +27,9 @@ const nextConfig = {
     },
     assetPrefix: assetPrefix,
     basePath: basePath,
+    experimental: {
+      forceSwcTransforms: true,
+    }
 };
 
 module.exports = nextConfig
