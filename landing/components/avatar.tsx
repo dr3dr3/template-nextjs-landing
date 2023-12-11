@@ -4,7 +4,7 @@ export default function Avatar(props:Avatar) {
   return (
     <>
       <Image
-        className="inline-block rounded-full"
+        className="inline-block rounded-full border-2 border-neutral-200 dark:border-neutral-800"
         src={props.avatar_url}
         alt="GitHub Profile Image"
         width={props.size}

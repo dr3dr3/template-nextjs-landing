@@ -1,50 +1,44 @@
-import { Endpoints } from "@octokit/types";
 import clsx from 'clsx';
-import { StarIcon, FaceSmileIcon, FaceFrownIcon, HandThumbDownIcon } from '@heroicons/react/24/outline'
-import { parseISO, differenceInBusinessDays } from 'date-fns';
-import { display, inter } from '@/style/fonts';
-import { env } from "process";
-import { create } from "domain";
-import { type } from "os";
-
-type listDeployments = Endpoints["GET /repos/{owner}/{repo}/deployments"]["response"]["data"];
-
-async function getDeploymentData() {
-    const ghRepo = process.env.GITHUB_REPOSITORY || '';
-    const ghOwner = process.env.GITHUB_REPOSITORY_OWNER || '';
-    const repo = ghRepo.replace(/.*?\//, '');
-    const ghUrl = `https://api.github.com/repos/${ghOwner}/${repo}/deployments?per_page=100`;
-    const res = await fetch(ghUrl);
-    
-    if (!res.ok) {
-      // This will activate the closest `error.js` Error Boundary
-      throw new Error('Failed to fetch data')
-    }
-  
-    return res.json()
-};
+import { display } from '@/style/fonts';
+import { StarIcon, FaceSmileIcon, FaceFrownIcon, HandThumbDownIcon } from '@heroicons/react/24/outline';
+import { getDeploymentFrequency, getChangeFailureRate, getMeanTimeToRecover, getLeadTimeToChange } from '@/api/ssg-at-build/github';
 
 export default async function KpiGrid() {
 
-    const data:listDeployments = await getDeploymentData();
+    const df = await getDeploymentFrequency();
+    const cfr = await getChangeFailureRate();
+    const mttr = await getMeanTimeToRecover();
+    const lttc = await getLeadTimeToChange();
 
-    const latest = Math.max( ...data.map( i => parseISO(i.created_at).getTime() ) );
-    const earliest = Math.min( ...data.map( i => parseISO(i.created_at).getTime() ) );
-    const bizDays = differenceInBusinessDays(latest, earliest);
-    const countDeployments = data.filter( i => i.environment === 'github-pages' ).length;
-    const df = countDeployments/bizDays;
-
-    let dfObj = { stat: df.toFixed(2), frame: 'per day', performance: 'elite' };
-    if (df < 0.14) dfObj = { stat: (df*20).toFixed(2), frame: 'per month' , performance: 'high' };
-    if (df < 0.03) dfObj = { stat: (df*20).toFixed(2), frame: 'per year' , performance: 'medium' };
-    if (df < 0.005) dfObj = { stat: (df*20).toFixed(2), frame: 'per year' , performance: 'low' };
+    let dfObj = { stat: df.toFixed(1), frame: 'per day', performance: 'elite' };
+    if (df < 1.00) dfObj = { stat: (df*20).toFixed(1), frame: 'per month' , performance: 'high' };
+    if (df < 0.03) dfObj = { stat: (df*280).toFixed(1), frame: 'per year' , performance: 'medium' };
+    if (df < 0.005) dfObj = { stat: (df*280).toFixed(1), frame: 'per year' , performance: 'low' };
     if (isNaN(df)) dfObj = { stat: 'ZERO', frame: '' , performance: '' };
+
+    let cfrObj = { stat: (cfr*100).toFixed(1), frame: 'percent', performance: 'elite' };
+    if (cfr > 0.15) cfrObj = { stat: (cfr*100).toFixed(1), frame: 'percent' , performance: 'high' };
+    if (cfr > 0.30) cfrObj = { stat: (cfr*100).toFixed(1), frame: 'percent' , performance: 'medium' };
+    if (cfr > 0.45) cfrObj = { stat: (cfr*100).toFixed(1), frame: 'percent' , performance: 'low' };
+    if (isNaN(cfr)) cfrObj = { stat: 'ZERO', frame: '' , performance: '' };
+
+    let mttrObj = { stat: mttr.toFixed(1), frame: 'average (mins)', performance: 'elite' };
+    if (mttr > 60) mttrObj = { stat: (mttr*60).toFixed(1), frame: 'average (hours)' , performance: 'high' };
+    if (mttr > 1440) mttrObj = { stat: (mttr*24).toFixed(1), frame: 'average (days)' , performance: 'medium' };
+    if (mttr > 10080) mttrObj = { stat: (mttr*24*7).toFixed(1), frame: 'average (weeks)' , performance: 'low' };
+    if (isNaN(mttr)) mttrObj = { stat: 'ZERO', frame: '' , performance: '' };
+
+    let lttcObj = { stat: (lttc/60).toFixed(1), frame: 'average (hours)', performance: 'elite' };
+    if (lttc/60 > 24) lttcObj = { stat: (lttc/60*24).toFixed(1), frame: 'average (days)' , performance: 'high' };
+    if (lttc/60 > 720) lttcObj = { stat: (lttc/60*24*30).toFixed(1), frame: 'average (months)' , performance: 'medium' };
+    if (lttc/60 > 4368) lttcObj = { stat: (lttc/60*24*182).toFixed(1), frame: 'average (months)' , performance: 'low' };
+    if (isNaN(lttc)) lttcObj = { stat: 'ZERO', frame: '' , performance: '' };
 
     const stats = [
         { name: 'Deployment Frequency', stat: dfObj.stat, frame: dfObj.frame, performance: dfObj.performance },
-        { name: 'Lead Time to Change',      stat: '58.16%',                                         frame: '56.14%',                             performance: 'high'     },
-        { name: 'Change Failure Rate',      stat: '24.57%',                                         frame: '28.62%',                             performance: 'medium'   },
-        { name: 'Mean Time to Recovery',    stat: '24.57%',                                         frame: '28.62%',                             performance: 'low'      },
+        { name: 'Lead Time to Change', stat: lttcObj.stat, frame: lttcObj.frame, performance: lttcObj.performance },
+        { name: 'Change Failure Rate', stat: cfrObj.stat, frame: cfrObj.frame, performance: cfrObj.performance },
+        { name: 'Mean Time to Recovery', stat: mttrObj.stat, frame: mttrObj.frame, performance: mttrObj.performance },
     ];
 
     return (

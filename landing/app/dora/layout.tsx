@@ -14,7 +14,7 @@ export default function TestLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased bg-neutral-50 dark:bg-neutral-950 text-primary-900 dark:text-primary-100`}>
+      <body className={`${inter.className} antialiased bg-neutral-100 dark:bg-neutral-900 text-primary-900 dark:text-primary-100`}>
         {children}
       </body>
     </html>
