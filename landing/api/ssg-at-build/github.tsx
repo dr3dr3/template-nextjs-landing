@@ -1,10 +1,61 @@
 import { Endpoints } from "@octokit/types";
 import { Color } from '@tremor/react';
-import { format, parseISO, differenceInBusinessDays, differenceInMinutes } from 'date-fns';
+import { parseISO, differenceInBusinessDays, differenceInMinutes } from 'date-fns';
 
 type listDeployments = Endpoints["GET /repos/{owner}/{repo}/deployments"]["response"]["data"];
 type listWorkflowRunsForRepo = Endpoints["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs"]["response"]["data"];
 type listIssues = Endpoints["GET /repos/{owner}/{repo}/issues"]["response"]["data"];
+
+interface GitHubUser {
+    login: string;
+    id: number;
+    node_id: string;
+    avatar_url: string;
+    gravatar_url: string;
+    url: string;
+    html_url: string;
+    followers_url:  string;
+    following_url:  string;
+    gists_url:  string;
+    starred_url:  string;
+    subscriptions_url: string;
+    organizations_url: string;
+    repos_url: string;
+    events_url: string;
+    received_events_url: string;
+    type: string;
+    site_admin: boolean;
+    name: string;
+    company: string;
+    blog: string;
+    location: string;
+    email: string | null;
+    hireable: boolean | null;
+    bio:string;
+    twitter_username: string | null;
+    public_repos: number;
+    public_gists: number;
+    followers: number;
+    following: number;
+    created_at: string;
+    updated_at:  string;
+};
+
+export async function getUser() {
+    const ghRepo = process.env.GITHUB_REPOSITORY || ''
+    const ghOwner = ghRepo.replace(/\/.*/, '')
+    const user_url = `https://api.github.com/users/${ghOwner}`
+    const res = await fetch(user_url)
+    
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error('Failed to fetch data')
+    }
+
+    const data:GitHubUser = await res.json();
+  
+    return data;
+};
 
 export async function getDeploymentFrequency() {
     const ghRepo = process.env.GITHUB_REPOSITORY || '';

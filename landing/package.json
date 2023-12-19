@@ -13,7 +13,7 @@
     "@featurevisor/react": "^0.64.0",
     "@featurevisor/sdk": "^0.64.0",
     "@headlessui/react": "^1.7.17",
-    "@heroicons/react": "^2.0.18",
+    "@heroicons/react": "^2.1.1",
     "@octokit/types": "^12.4.0",
     "@tremor/react": "^3.11.1",
     "clsx": "^2.0.0",

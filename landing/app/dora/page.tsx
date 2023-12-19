@@ -1,5 +1,5 @@
 import KpiGrid from '@/interfaces/kpi-grid';
-import TrackerCD from '@/components/observe-tracker';
+import TrackerCD from '@/components/async/observe-tracker';
 
 export default async function Test() {
   // const data:GitHubUser = await getData()

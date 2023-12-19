@@ -1,27 +1,20 @@
+import '@/style/globals.css';
 import { getInstance } from '@/utils/featurevisor';
 
-export async function getStaticProps() {
+export default async function FeatureFlagSSG() {
+
   const featureKey = "showLatestChange";
   const context = { userId: "123" };
-
   // get access to the Featurevisor SDK instance
   const f = await getInstance();
-
   // evaluate your feature flag, variation, or their variables
   const isEnabled = f.isEnabled(featureKey, context);
 
-  // pass your evaluation as regular props
-  return {
-    props: {
-      isEnabled: isEnabled,
-    },
-  };
-};
-
-export default function FeatureFlag(props) {
   return (
     <>
-      <div>Feature is {props.isEnabled ? "enabled" : "disabled"}</div>
+      <div className=' flex h-screen items-center justify-center'>
+        <div>Feature is {isEnabled ? "enabled" : "disabled"}</div>
+      </div>
     </>
   )
 };

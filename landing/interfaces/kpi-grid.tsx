@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { display } from '@/style/fonts';
-import { StarIcon, FaceSmileIcon, FaceFrownIcon, HandThumbDownIcon } from '@heroicons/react/24/outline';
+import { StarIcon, HandThumbUpIcon, FaceFrownIcon, HandThumbDownIcon } from '@heroicons/react/16/solid';
 import { getDeploymentFrequency, getChangeFailureRate, getMeanTimeToRecover, getLeadTimeToChange } from '@/api/ssg-at-build/github';
 
 export default async function KpiGrid() {
@@ -54,35 +54,35 @@ export default async function KpiGrid() {
                                 {item.stat}
                                 <span className="ml-2 text-sm font-medium text-neutral-500">{item.frame}</span>
                             </div>
-                            <div className={clsx('inline-flex items-center rounded-full px-2 py-1 text-sm font-medium md:mt-2 lg:mt-0',
+                            <div className={clsx('inline-flex items-center rounded-full px-2 py-1 text-xs font-normal md:mt-2 lg:mt-0',
                                 {
-                                'bg-yellow-200 text-yellow-900': item.performance === 'elite',
-                                'bg-green-200 text-green-900': item.performance === 'high',
-                                'bg-pink-200 text-pink-900': item.performance === 'medium',
-                                'bg-red-200 text-red-900': item.performance === 'low',
+                                'bg-yellow-200 text-yellow-700': item.performance === 'elite',
+                                'bg-green-200 text-green-700': item.performance === 'high',
+                                'bg-orange-200 text-orange-700': item.performance === 'medium',
+                                'bg-red-200 text-red-700': item.performance === 'low',
                                 }
                                 )}>
                                 {item.performance === 'elite' ? (
                                 <StarIcon
-                                    className="-ml-1 mr-1 h-4 w-4 flex-shrink-0 self-center text-green-500"
+                                    className="-ml-1 mr-1 h-4 w-4 flex-shrink-0 self-center"
                                     aria-hidden="true"
                                 />
                                 ) : ('')}
                                 {item.performance === 'high' ? (
-                                <FaceSmileIcon
-                                    className="-ml-1 mr-1 h-4 w-4 flex-shrink-0 self-center text-red-500"
+                                <HandThumbUpIcon
+                                    className="-ml-1 mr-1 h-4 w-4 flex-shrink-0 self-center -scale-y-100 -rotate-180"
                                     aria-hidden="true"
                                 />
                                 ) : ('')}
                                 {item.performance === 'medium' ? (
-                                <FaceFrownIcon
-                                    className="-ml-1 mr-1 h-4 w-4 flex-shrink-0 self-center text-red-500"
+                                <HandThumbDownIcon
+                                    className="-ml-1 mr-1 h-4 w-4 flex-shrink-0 self-center"
                                     aria-hidden="true"
                                 />
                                 ) : ('')}
                                 {item.performance === 'low' ? (
-                                <HandThumbDownIcon
-                                    className="-ml-1 mr-1 h-4 w-4 flex-shrink-0 self-center text-red-500"
+                                <FaceFrownIcon
+                                    className="-ml-1 mr-1 h-4 w-4 flex-shrink-0 self-center"
                                     aria-hidden="true"
                                 />
                                 ) : ('')}
