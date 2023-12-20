@@ -1,4 +1,3 @@
-import '@/style/globals.css';
 import { getInstance } from '@/utils/featurevisor';
 import Card from '@/components/ui/card-with-icon';
 import { UnderConstructionIcon, ComingSoonIcon } from '@/components/ui/icon-library';

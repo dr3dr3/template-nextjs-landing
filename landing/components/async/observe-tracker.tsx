@@ -9,7 +9,7 @@ export default async function TrackerCD() {
     return (
         <Card className="max-w-2xl mx-auto">
             <Title className='font-bold'>Status</Title>
-            <Text>Lena&apos;s Webshop &bull; May 2022</Text>
+            <Text>Deployments</Text>
             <Flex justifyContent="end" className="mt-4">
             <Text>Success { ((success.length/stats.length)*100).toFixed(2) }%</Text>
             </Flex>
