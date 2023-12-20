@@ -25,13 +25,10 @@ export default function ClientSideFeatureFlagWrapper({
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
-
-  useEffect(() => {
     if ( isReady ) { 
       setIsEnabled(ff.isEnabled(feature,{ userId: "123" , mode: mode}));
     };
-  }, [ff, isReady, isEnabled, feature, mode]);
+  }, [ff, isReady, feature, mode]);
 
   return (
     <>

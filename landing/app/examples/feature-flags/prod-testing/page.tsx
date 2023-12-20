@@ -12,7 +12,7 @@ export default async function ExampleFeatureFlagTestInProduction() {
   return (
     <>
       <div className=' flex h-screen items-center justify-center'>
-        <Suspense>
+        <Suspense fallback={<Fallback />}>
           <ClientSideFeatureFlagWrapper feature="exampleProdTesting" showDisabled={true}>
             <Card 
             title="Production Testing" 

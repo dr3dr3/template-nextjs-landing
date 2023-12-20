@@ -12,17 +12,17 @@ export default async function ExampleFeatureFlagDarkLaunch() {
   return (
     <>
       <div className=' flex h-screen items-center justify-center'>
-        { isEnabled ? (
+        { !isEnabled ? (
             <Card 
                 title="Under Construction" 
-                blurb="This feature is still under development and currently hidden behind a dark launch feature flag. Once ready it will be be turned on in the production environment."
+                blurb="This feature is still under development and currently hidden behind a dark launch feature flag. Once 'dev complete' the type of feature flag can be changed (i.e. canary release)."
                 >
                 <UnderConstructionIcon />
             </Card>
         ) : (
             <Card 
-                title="Coming Soon" 
-                blurb="This feature is visible in sandbox and CI environments, but not in Stage or Production. A dark launch feature flag is being used. Once ready it can be turned on in production environment."
+                title="Now Live!" 
+                blurb="This feature is visible in sandbox and CI environments for testing purposes, but not yet in Stage and Production environments."
                 >
                 <ComingSoonIcon />
             </Card>
