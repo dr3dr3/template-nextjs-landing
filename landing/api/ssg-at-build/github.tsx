@@ -165,7 +165,7 @@ export async function getContinuousDeploymentWorkflow() {
     
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
-      throw new Error('Failed to fetch data');
+      throw new Error(`Failed to fetch data from: ${ghUrl}`);
     };
 
     const data:listWorkflowRunsForRepo = await res.json();
