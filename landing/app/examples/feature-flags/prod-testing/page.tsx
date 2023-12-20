@@ -4,7 +4,7 @@ import Card from '@/components/ui/card-with-icon';
 import { GitHubIcon } from '@/components/ui/icon-library';
 
 function Fallback() {
-  return <div>Suspense Fallback</div>
+  return <div>...</div>
 };
 
 export default async function ExampleFeatureFlagTestInProduction() {
