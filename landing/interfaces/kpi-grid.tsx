@@ -23,9 +23,9 @@ export default async function KpiGrid() {
     if (isNaN(cfr)) cfrObj = { stat: 'ZERO', frame: '' , performance: '' };
 
     let mttrObj = { stat: mttr.toFixed(1), frame: 'average (mins)', performance: 'elite' };
-    if (mttr > 60) mttrObj = { stat: (mttr*60).toFixed(1), frame: 'average (hours)' , performance: 'high' };
-    if (mttr > 1440) mttrObj = { stat: (mttr*24).toFixed(1), frame: 'average (days)' , performance: 'medium' };
-    if (mttr > 10080) mttrObj = { stat: (mttr*24*7).toFixed(1), frame: 'average (weeks)' , performance: 'low' };
+    if (mttr > 60) mttrObj = { stat: (mttr/60).toFixed(1), frame: 'average (hours)' , performance: 'high' };
+    if (mttr > 1440) mttrObj = { stat: ((mttr/60)*24).toFixed(1), frame: 'average (days)' , performance: 'medium' };
+    if (mttr > 10080) mttrObj = { stat: ((mttr/60)*24*7).toFixed(1), frame: 'average (weeks)' , performance: 'low' };
     if (isNaN(mttr)) mttrObj = { stat: 'ZERO', frame: '' , performance: '' };
 
     let lttcObj = { stat: (lttc/60).toFixed(1), frame: 'average (hours)', performance: 'elite' };

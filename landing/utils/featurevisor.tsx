@@ -16,7 +16,7 @@ export async function getInstance(): Promise<FeaturevisorInstance> {
     //       enabled: true
     //   }
     // },
-    onReady: () => console.log("Featurevisor SDK is ready"),
+    onReady: () => console.log("Featurevisor SDK is ready (used in builds)"),
   });
 
   const instance = await f.onReady();

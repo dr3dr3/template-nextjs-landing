@@ -1,7 +1,8 @@
 import { Suspense } from 'react'
 import ClientSideFeatureFlagWrapper from '@/components/wrapper/featureflag-csr-wrapper';
 import Card from '@/components/ui/card-with-icon';
-import { GitHubIcon } from '@/components/ui/icon-library';
+import { EyeSlashIcon } from '@heroicons/react/24/solid';
+import { StaticDataCardsFeatureFlags } from '@/static-data/cards-feature-flags';
 
 function Fallback() {
   return <div>...</div>
@@ -9,16 +10,18 @@ function Fallback() {
 
 export default async function ExampleFeatureFlagTestInProduction() {
 
+  const staticData = StaticDataCardsFeatureFlags.filter(i => i.route === '/examples/feature-flags/prod-testing')[0];
+
   return (
     <>
       <div className=' flex h-screen items-center justify-center'>
         <Suspense fallback={<Fallback />}>
           <ClientSideFeatureFlagWrapper feature="exampleProdTesting" showDisabled={true}>
             <Card 
-            title="Production Testing" 
-            blurb="This feature is dev complete and releasable to Production, but is still toggled off for end users. Testers are excluded, so they are able to test this feature in the production environment."
+            title={staticData.title} 
+            blurb={staticData.blurb}
             >
-              <GitHubIcon />
+              <EyeSlashIcon />
             </Card>
           </ClientSideFeatureFlagWrapper>
         </Suspense>
