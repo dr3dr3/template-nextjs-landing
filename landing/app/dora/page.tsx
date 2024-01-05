@@ -1,5 +1,5 @@
-import KpiGrid from '@/interfaces/kpi-grid';
-import TrackerCD from '@/components/async/observe-tracker';
+import KpiGrid from '@/components/functional/kpi-grid';
+import TrackerCD from '@/components/functional/observe-tracker';
 
 export default function Test() {
   return (
@@ -11,6 +11,5 @@ export default function Test() {
         </div>
       </div>
     </>
-  )
-};
-
+  );
+}
