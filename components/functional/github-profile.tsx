@@ -14,7 +14,7 @@ export default async function GitHubProfile() {
   return (
     <>
       {isEnabled ? (
-        <div className="mx-auto max-w-2xl sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl sm:px-4 lg:px-8">
           <div className="text-center sm:text-left sm:flex">
             <div className="px-8 mb-4 sm:flex-shrink-0 sm:mb-0 sm:mr-4">
               <Avatar avatar_url={data.avatar_url} size={120} alt="GitHub Profile Image" />
