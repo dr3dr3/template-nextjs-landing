@@ -104,7 +104,7 @@ export async function getMeanTimeToRecover() {
   const ghOwner = process.env.GITHUB_REPOSITORY_OWNER || '';
   const repo = ghRepo.replace(/.*?\//, '');
   const ghUrl = `https://api.github.com/repos/${ghOwner}/${repo}/issues?labels=bug&state=closed&per_page=100`;
-  const res = await fetch(ghUrl, { next: { revalidate: 3600 } });
+  const res = await fetch(ghUrl, { cache: 'no-store' });
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
