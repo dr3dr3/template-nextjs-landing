@@ -5,54 +5,27 @@ import { parseISO, differenceInBusinessDays, differenceInMinutes } from 'date-fn
 type listDeployments = Endpoints['GET /repos/{owner}/{repo}/deployments']['response']['data'];
 type listWorkflowRunsForRepo = Endpoints['GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs']['response']['data'];
 type listIssues = Endpoints['GET /repos/{owner}/{repo}/issues']['response']['data'];
+type getUser = Endpoints['GET /users/{username}']['response']['data'];
 
-interface GitHubUser {
-  login: string;
-  id: number;
-  node_id: string;
-  avatar_url: string;
-  gravatar_url: string;
-  url: string;
-  html_url: string;
-  followers_url: string;
-  following_url: string;
-  gists_url: string;
-  starred_url: string;
-  subscriptions_url: string;
-  organizations_url: string;
-  repos_url: string;
-  events_url: string;
-  received_events_url: string;
-  type: string;
-  site_admin: boolean;
-  name: string;
-  company: string;
-  blog: string;
-  location: string;
-  email: string | null;
-  hireable: boolean | null;
-  bio: string;
-  twitter_username: string | null;
-  public_repos: number;
-  public_gists: number;
-  followers: number;
-  following: number;
-  created_at: string;
-  updated_at: string;
-}
+type Tracker = [
+  {
+    color: Color;
+    tooltip: string;
+  },
+];
 
 export async function getUser() {
   const ghRepo = process.env.GITHUB_REPOSITORY || '';
   const ghOwner = ghRepo.replace(/\/.*/, '');
-  const user_url = `https://api.github.com/users/${ghOwner}`;
-  const res = await fetch(user_url);
+  const ghUrl = `https://api.github.com/users/${ghOwner}`;
+  const res = await fetch(ghUrl, { next: { revalidate: 3600 } });
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error('Failed to fetch data');
   }
 
-  const data: GitHubUser = await res.json();
+  const data: getUser = await res.json();
 
   return data;
 }
@@ -62,12 +35,12 @@ export async function getDeploymentFrequency() {
   const ghOwner = process.env.GITHUB_REPOSITORY_OWNER || '';
   const repo = ghRepo.replace(/.*?\//, '');
   const ghUrl = `https://api.github.com/repos/${ghOwner}/${repo}/deployments?per_page=100`;
-  const res = await fetch(ghUrl);
+  const res = await fetch(ghUrl, { next: { revalidate: 3600 } });
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error('Failed to fetch data');
-  }
+  };
 
   const data: listDeployments = await res.json();
   const latest = Math.max(...data.map((i) => parseISO(i.created_at).getTime()));
@@ -84,7 +57,7 @@ export async function getChangeFailureRate() {
   const ghOwner = process.env.GITHUB_REPOSITORY_OWNER || '';
   const repo = ghRepo.replace(/.*?\//, '');
   const ghUrl = `https://api.github.com/repos/${ghOwner}/${repo}/actions/workflows/on-push-main.yml/runs?per_page=100`;
-  const res = await fetch(ghUrl);
+  const res = await fetch(ghUrl, { next: { revalidate: 3600 } });
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
@@ -104,7 +77,7 @@ export async function getMeanTimeToRecover() {
   const ghOwner = process.env.GITHUB_REPOSITORY_OWNER || '';
   const repo = ghRepo.replace(/.*?\//, '');
   const ghUrl = `https://api.github.com/repos/${ghOwner}/${repo}/issues?labels=bug&state=closed&per_page=100`;
-  const res = await fetch(ghUrl, { cache: 'no-store' });
+  const res = await fetch(ghUrl, { next: { revalidate: 3600 } });
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
@@ -130,7 +103,7 @@ export async function getLeadTimeToChange() {
   const ghOwner = process.env.GITHUB_REPOSITORY_OWNER || '';
   const repo = ghRepo.replace(/.*?\//, '');
   const ghUrl = `https://api.github.com/repos/${ghOwner}/${repo}/issues?labels=feature&state=closed&per_page=30`;
-  const res = await fetch(ghUrl);
+  const res = await fetch(ghUrl, { next: { revalidate: 3600 } });
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
@@ -151,19 +124,12 @@ export async function getLeadTimeToChange() {
   return lttc;
 }
 
-type Tracker = [
-  {
-    color: Color;
-    tooltip: string;
-  },
-];
-
 export async function getContinuousDeploymentWorkflow() {
   const ghRepo = process.env.REPO_PROD || '';
   const ghOwner = process.env.GITHUB_REPOSITORY_OWNER || '';
   const repo = ghRepo.replace(/.*?\//, '');
   const ghUrl = `https://api.github.com/repos/${ghOwner}/${repo}/actions/workflows/on-repo-dispatch.yml/runs?per_page=30`;
-  const res = await fetch(ghUrl);
+  const res = await fetch(ghUrl, { next: { revalidate: 3600 } });
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
