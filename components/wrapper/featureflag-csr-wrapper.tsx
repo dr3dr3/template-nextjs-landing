@@ -27,9 +27,5 @@ export default function ClientSideFeatureFlagWrapper({ children, feature, showDi
   //   </div>
   // )
 
-  return (
-    <>
-      {ff && (<div>{children}</div>)}
-    </>
-  );
+  return <>{ff && <div>{children}</div>}</>;
 }

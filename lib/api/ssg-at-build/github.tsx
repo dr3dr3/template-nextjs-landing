@@ -40,7 +40,7 @@ export async function getDeploymentFrequency() {
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error('Failed to fetch data');
-  };
+  }
 
   const data: listDeployments = await res.json();
   const latest = Math.max(...data.map((i) => parseISO(i.created_at).getTime()));

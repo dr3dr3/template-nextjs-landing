@@ -6,10 +6,7 @@
         "repo": "template-nextjs-landing",
         "repoDescription": "Micro-frontend for landing page",
         "repoTemplate": "template-nextjs-landing",
-        "groups": [
-          "devops-demo",
-          "default"
-        ],
+        "groups": ["devops-demo", "default"],
         "route": "root",
         "githubPages": true,
         "gitflow": "pull-request",
@@ -20,9 +17,7 @@
         "repo": "template-revealmd",
         "repoDescription": "Micro-frontend for slides using Reveal-MD",
         "repoTemplate": "template-revealmd",
-        "groups": [
-          "devops-demo"
-        ],
+        "groups": ["devops-demo"],
         "route": "present",
         "githubPages": true,
         "gitflow": "pull-request",
@@ -33,9 +28,7 @@
         "repo": "template-featurevisor",
         "repoDescription": "Feature flag service",
         "repoTemplate": "template-featurevisor",
-        "groups": [
-          "feature-flag-service"
-        ],
+        "groups": ["feature-flag-service"],
         "route": "root",
         "githubPages": true,
         "gitflow": "trunk-based-development",
