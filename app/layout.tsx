@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`${display.className} antialiased bg-neutral-100 dark:bg-neutral-900 text-primary-900 dark:text-primary-100`}>
         <Providers>{children}</Providers>
-        <Script src="/darkmode-toggle.js" type="application/javascript" />
+        <Script src="darkmode-toggle.js" type="application/javascript" />
         <div className="absolute top-3 left-3">
           <button id="theme-toggle" type="button" className="hover:bg-neutral-200 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-300 dark:focus:ring-neutral-700 rounded-lg text-sm p-2.5">
             <svg id="theme-toggle-dark-icon" className="hidden w-4 h-4 fill-primary" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
